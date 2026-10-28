@@ -1,1 +1,243 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Jibon Music Studio</title>
+<style>
+:root{--gold:#e9bd57;--bg:#080808;--card:#171717}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;padding:25px 12px;background:linear-gradient(145deg,#30220a,#090909 65%);border-bottom:1px solid #60491c}
+.logo{width:76px;height:76px;border:2px solid var(--gold);border-radius:50%;margin:auto;display:grid;place-items:center;font-size:35px;color:var(--gold)}
+h1{color:var(--gold);font-size:25px;margin:12px 0 5px}
+header p{color:#d2c6aa;margin:0;font-size:13px}
+main{padding:15px;max-width:650px;margin:auto}
+h2{color:var(--gold);font-size:18px}
+.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+button,.filebtn{border:1px solid #755a24;background:#201a0d;color:#f5d887;border-radius:10px;padding:12px;font-size:14px;cursor:pointer}
+button:active{background:#57431b}
+.categories button.active{background:var(--gold);color:#111}
+.panel{background:var(--card);padding:14px;border:1px solid #333;border-radius:14px;margin:16px 0}
+input{width:100%;padding:12px;margin:7px 0;background:#0b0b0b;color:white;border:1px solid #555;border-radius:8px}
+input[type=file]{font-size:13px}
+.row{display:flex;gap:8px}
+.row input{min-width:0;flex:1}
+.row button{white-space:nowrap}
+#songs{display:grid;gap:8px}
+.song{display:flex;align-items:center;gap:10px;background:#191919;padding:12px;border-radius:10px;border:1px solid #292929}
+.song .info{flex:1;min-width:0}
+.song strong{display:block;overflow-wrap:anywhere;font-size:14px}
+.song small{display:block;color:#aaa;margin-top:5px}
+.song button{padding:8px}
+.song.selected{border-color:var(--gold)}
+audio{width:100%;margin:12px 0;accent-color:var(--gold)}
+#now{color:var(--gold);overflow-wrap:anywhere}
+.note{font-size:12px;color:#aaa;line-height:1.6}
+footer{text-align:center;padding:25px;color:#a99465;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">♫</div>
+  <h1>Jibon Music Studio</h1>
+  <p>Your Music, Your Emotion</p>
+</header>
+
+<main>
+  <h2>🎵 গানের বিভাগ</h2>
+  <div class="categories" id="categories">
+    <button class="active" data-cat="সব গান">🎶 সব গান</button>
+    <button data-cat="বাংলা গান">🇧🇩 বাংলা গান</button>
+    <button data-cat="রোমান্টিক গান">❤️ রোমান্টিক গান</button>
+    <button data-cat="চাটগাঁইয়া গান">🌊 চাটগাঁইয়া গান</button>
+    <button data-cat="রোহিঙ্গা গান">🎼 রোহিঙ্গা গান</button>
+    <button data-cat="আমার গান">📥 আমার গান</button>
+  </div>
+
+  <section class="panel">
+    <h2>▶️ এখন চলছে</h2>
+    <div id="now">একটি গান নির্বাচন করুন</div>
+    <audio id="player" controls preload="metadata"></audio>
+    <div class="row">
+      <button id="prev">⏮ আগের</button>
+      <button id="next">পরের ⏭</button>
+    </div>
+    <p class="note">অনলাইন গান চালাতে ইন্টারনেট লাগবে। ফোনে সংরক্ষিত গান অফলাইনেও চলতে পারে।</p>
+  </section>
+
+  <section class="panel">
+    <h2>🌐 অনলাইন গান যোগ করুন</h2>
+    <input id="url" type="url" placeholder="সরাসরি MP3 অডিও লিংক দিন">
+    <input id="onlineName" placeholder="গানের নাম">
+    <select id="onlineCat" style="width:100%;padding:11px;background:#0b0b0b;color:white;border-radius:8px">
+      <option>বাংলা গান</option>
+      <option>রোমান্টিক গান</option>
+      <option>চাটগাঁইয়া গান</option>
+      <option>রোহিঙ্গা গান</option>
+    </select>
+    <button id="addUrl" style="width:100%;margin-top:10px">＋ অনলাইন গান যোগ করুন</button>
+    <p class="note">শুধু বৈধ ও সরাসরি অডিও লিংক ব্যবহার করুন। YouTube পেজের লিংক সাধারণত এখানে সরাসরি বাজবে না।</p>
+  </section>
+
+  <section class="panel">
+    <h2>📥 অফলাইন গান যোগ করুন</h2>
+    <label class="filebtn" style="display:block;text-align:center">
+      ফোন থেকে অডিও নির্বাচন করুন
+      <input id="files" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac" multiple>
+    </label>
+    <p class="note">ফোনের গান নির্বাচন করলে অ্যাপ সেগুলো সংরক্ষণের চেষ্টা করবে। ব্রাউজার বা অ্যাপের স্টোরেজ সীমাবদ্ধতা থাকতে পারে।</p>
+    <button id="clear" style="width:100%">তালিকা রিফ্রেশ করুন</button>
+  </section>
+
+  <h2>🎧 গানের তালিকা</h2>
+  <div id="songs"></div>
+  <p id="empty" class="note">এখনো গান যোগ করা হয়নি। ফোন থেকে গান যোগ করুন অথবা অনলাইন অডিও লিংক দিন।</p>
+</main>
+<footer>© Jibon Music Studio</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const player = $("player");
+let songs = [];
+let current = -1;
+let category = "সব গান";
+let db;
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    if(!("indexedDB" in window)){resolve(null);return}
+    const req=indexedDB.open("JibonMusicDB",1);
+    req.onupgradeneeded=()=>{
+      const d=req.result;
+      if(!d.objectStoreNames.contains("songs"))
+        d.createObjectStore("songs",{keyPath:"id"});
+    };
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>resolve(null);
+  });
+}
+function storeSong(song){
+  return new Promise(resolve=>{
+    if(!db){resolve(false);return}
+    try{
+      const tx=db.transaction("songs","readwrite");
+      tx.objectStore("songs").put(song);
+      tx.oncomplete=()=>resolve(true);
+      tx.onerror=()=>resolve(false);
+    }catch(e){resolve(false)}
+  });
+}
+function loadStored(){
+  return new Promise(resolve=>{
+    if(!db){resolve([]);return}
+    try{
+      const req=db.transaction("songs").objectStore("songs").getAll();
+      req.onsuccess=()=>resolve(req.result||[]);
+      req.onerror=()=>resolve([]);
+    }catch(e){resolve([])}
+  });
+}
+function safeText(s){return String(s||"")}
+function render(){
+  const list=$("songs");
+  list.innerHTML="";
+  const visible=songs.filter(s=>category==="সব গান"||s.cat===category);
+  $("empty").style.display=visible.length?"none":"block";
+  visible.forEach(song=>{
+    const idx=songs.indexOf(song);
+    const div=document.createElement("div");
+    div.className="song"+(idx===current?" selected":"");
+    const info=document.createElement("div");
+    info.className="info";
+    const name=document.createElement("strong");
+    name.textContent=safeText(song.name);
+    const meta=document.createElement("small");
+    meta.textContent=song.cat+" · "+(song.type==="local"?"অফলাইন গান":"অনলাইন গান");
+    info.append(name,meta);
+    const play=document.createElement("button");
+    play.textContent="▶";
+    play.setAttribute("aria-label","গান চালান");
+    play.onclick=()=>playSong(idx);
+    const del=document.createElement("button");
+    del.textContent="×";
+    del.setAttribute("aria-label","তালিকা থেকে বাদ দিন");
+    del.onclick=async()=>{
+      if(current===idx){player.pause();player.removeAttribute("src");current=-1}
+      const id=song.id;
+      songs=songs.filter(s=>s.id!==id);
+      if(db&&song.type==="local"){
+        try{db.transaction("songs","readwrite").objectStore("songs").delete(id)}catch(e){}
+      }
+      render();
+    };
+    div.append(info,play,del);
+    list.append(div);
+  });
+}
+function playSong(idx){
+  if(idx<0||idx>=songs.length)return;
+  const s=songs[idx];
+  current=idx;
+  player.src=s.type==="local"?URL.createObjectURL(s.blob):s.url;
+  $("now").textContent=s.name;
+  render();
+  player.play().catch(()=>alert("গান চালু হয়নি। ইন্টারনেট, অডিও লিংক বা ফাইল পরীক্ষা করুন।"));
+}
+$("categories").querySelectorAll("button").forEach(b=>{
+  b.onclick=()=>{
+    category=b.dataset.cat;
+    $("categories").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));
+    render();
+  };
+});
+$("addUrl").onclick=async()=>{
+  const url=$("url").value.trim();
+  const name=$("onlineName").value.trim();
+  if(!url||!name){alert("গানের নাম ও অডিও লিংক দিন।");return}
+  try{
+    const u=new URL(url);
+    if(!["http:","https:"].includes(u.protocol))throw Error();
+  }catch(e){alert("সঠিক HTTP/HTTPS অডিও লিংক দিন।");return}
+  const s={id:"web-"+Date.now()+"-"+Math.random().toString(36).slice(2),name,cat:$("onlineCat").value,type:"online",url};
+  songs.push(s);
+  await storeSong(s);
+  $("url").value="";
+  $("onlineName").value="";
+  render();
+};
+$("files").onchange=async e=>{
+  const files=Array.from(e.target.files||[]);
+  for(const file of files){
+    if(!file.type.startsWith("audio/")&&!/\.(mp3|m4a|wav|ogg|aac|flac)$/i.test(file.name))continue;
+    const s={id:"local-"+Date.now()+"-"+Math.random().toString(36).slice(2),name:file.name.replace(/\.[^.]+$/,""),cat:"আমার গান",type:"local",blob:file};
+    songs.push(s);
+    await storeSong(s);
+  }
+  render();
+  e.target.value="";
+};
+$("prev").onclick=()=>{
+  if(!songs.length)return;
+  playSong((current<=0?songs.length:current)-1);
+};
+$("next").onclick=()=>{
+  if(!songs.length)return;
+  playSong((current+1)%songs.length);
+};
+player.onended=()=>{
+  if(songs.length)playSong((current+1)%songs.length);
+};
+$("clear").onclick=render;
+
+(async()=>{
+  db=await openDB();
+  songs=await loadStored();
+  render();
+})();
+</script>
+</body>
+</html>
+
