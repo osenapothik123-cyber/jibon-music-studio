@@ -104,6 +104,23 @@ jobs:
               </application>
           </manifest>
           EOF
+           
+          mkdir -p app/src/main/res/drawable
+
+          cat > app/src/main/res/drawable/ic_launcher.xml <<'EOF'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp"
+              android:height="108dp"
+              android:viewportWidth="108"
+              android:viewportHeight="108">
+              <path
+                  android:fillColor="#111111"
+                  android:pathData="M54,4 A50,50 0,1 0,54 104 A50,50 0,1 0,54 4"/>
+              <path
+                  android:fillColor="#D4AF37"
+                  android:pathData="M61,24 L61,66 C61,74 43,76 43,66 C43,59 52,57 57,61 L57,34 L77,29 L77,55 C77,63 59,65 59,55 C59,48 68,46 73,50 L73,34 Z"/>
+          </vector>
+          EOF
 
           cat > app/src/main/java/com/jibon/musicstudio/MainActivity.java <<'EOF'
           package com.jibon.musicstudio;
